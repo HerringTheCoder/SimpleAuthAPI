@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.Logging;
-using SimpleAuthAPI.Database;
 
 namespace SimpleAuthAPI.Services
 {
-    public class BaseRepository<T> where T : class
+    public class BaseRepository<TEntity, TContext> 
+    where TEntity : class
+    where TContext : class
     {
-        protected readonly AuthDbContext _context;
-        protected readonly ILogger<T> _logger;
-        public BaseRepository(AuthDbContext context, ILogger<T> logger)
+        protected readonly TContext _context;
+        protected readonly ILogger<TEntity> _logger;
+        public BaseRepository(TContext context, ILogger<TEntity> logger)
         {
             _logger = logger;
             _context = context;

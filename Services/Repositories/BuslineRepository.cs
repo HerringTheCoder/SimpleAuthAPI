@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SimpleAuthAPI.Services
 {
-    public class BuslineRepository : BaseRepository<BuslineRepository>, IBuslineRepository
+    public class BuslineRepository : BaseRepository<BuslineRepository, AuthDbContext>, IBuslineRepository
     {
         public BuslineRepository(AuthDbContext context, ILogger<BuslineRepository> logger) : base(context, logger) { }
 

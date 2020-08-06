@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,7 @@ using SimpleAuthAPI.Interfaces;
 using SimpleAuthAPI.Middleware;
 using SimpleAuthAPI.Models;
 using SimpleAuthAPI.Services;
+using SimpleAuthAPI.Services.Repositories;
 
 namespace SimpleAuthAPI
 {
@@ -27,6 +29,7 @@ namespace SimpleAuthAPI
         {
             services.AddTransient<IAuthenticator, AuthenticationService>();
             services.AddScoped<IBuslineRepository, BuslineRepository>();
+            services.AddScoped<ITest1Repository, Test1Repository>();
 
             services.AddCors(options =>
             {
@@ -42,12 +45,17 @@ namespace SimpleAuthAPI
             services.AddDbContext<AuthDbContext>(options => options
             .UseSqlServer(Configuration.GetConnectionString("SqlConnection"), db => db.UseNetTopologySuite()));
 
+            services.AddDbContext<LargeDataContext>(options => options
+            .UseSqlServer(Configuration.GetConnectionString("LargeDataConnection")));
+
             services.AddIdentity<AppUser, IdentityRole>(options => options
                 .SignIn.RequireConfirmedAccount = true)
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<AuthDbContext>();
 
             services.AddTokenAuthentication(Configuration);
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
